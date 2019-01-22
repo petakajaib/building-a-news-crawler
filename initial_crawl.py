@@ -2,7 +2,6 @@ from datetime import datetime
 import json
 from pprint import pprint
 import pytz
-import sys
 import time
 from pymongo import MongoClient
 import tweepy
@@ -28,19 +27,14 @@ db = client[MONGO_DB]
 news_source_collection = db[MONGO_NEWS_SOURCE_COLLECTION]
 article_collection = db[MONGO_COLLECTION]
 
-try:
-    sys.argv[1]
-except IndexError:
-    raise IndexError("you need set the twitter handle.")
-
-for news_source in news_source_collection.find({"twitter_handle": sys.argv[1]}):
+for news_source in news_source_collection.find():
 
     twitter_handle = news_source["twitter_handle"]
     link_pattern = news_source["link_pattern"]
 
     print(twitter_handle)
 
-    for tweet in tweet_generator(api, twitter_handle, link_pattern, items=1000):
+    for tweet in tweet_generator(api, twitter_handle, link_pattern, items=5):
 
 
         if article_collection.count({"url": tweet["url"]}) == 0:

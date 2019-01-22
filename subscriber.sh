@@ -2,6 +2,6 @@
 
 while true; do
   #statements
-  python crawl_twitter.py
+  python subscriber.py
 
 done
